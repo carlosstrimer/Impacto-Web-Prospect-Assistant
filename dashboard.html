@@ -1,0 +1,208 @@
+<!-- FILE: dashboard.html -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Impacto Web Prospect Assistant</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <div class="logo">IW</div>
+      <div>
+        <div class="brand-name">Impacto Web</div>
+        <div class="brand-sub">Prospect Assistant</div>
+      </div>
+    </div>
+    <nav class="tabs">
+      <button data-tab="leads" class="tab active">Leads</button>
+      <button data-tab="templates" class="tab">Templates</button>
+      <button data-tab="settings" class="tab">Configurações</button>
+    </nav>
+  </header>
+
+  <main>
+    <!-- ========== LEADS ========== -->
+    <section id="tab-leads" class="tab-panel active">
+      <div class="stats-grid" id="statsGrid"></div>
+
+      <div class="toolbar">
+        <div class="toolbar-group">
+          <button id="btnImport" class="btn primary">Importar Leads</button>
+          <input type="file" id="fileInput" accept=".csv,.json" hidden>
+          <select id="importMode" class="select">
+            <option value="replace">Substituir lista</option>
+            <option value="append">Adicionar à lista</option>
+          </select>
+        </div>
+        <div class="toolbar-group grow">
+          <input type="search" id="searchInput" class="search" placeholder="Buscar empresa, categoria, cidade, telefone...">
+        </div>
+        <div class="toolbar-group">
+          <button id="btnGenerateAll" class="btn">Gerar todas (filtradas)</button>
+          <button id="btnExportCSV" class="btn ghost">CSV</button>
+          <button id="btnExportJSON" class="btn ghost">JSON</button>
+        </div>
+      </div>
+
+      <div class="filters">
+        <select id="filterPresenca" class="select">
+          <option value="">Presença digital</option>
+          <option value="site">Com site</option>
+          <option value="instagram">Somente Instagram</option>
+          <option value="whatsapp">Somente WhatsApp</option>
+          <option value="insta_whats">Instagram + WhatsApp</option>
+          <option value="nenhuma">Sem presença</option>
+        </select>
+        <select id="filterStatus" class="select">
+          <option value="">Status da mensagem</option>
+          <option value="nao_gerada">Não gerada</option>
+          <option value="gerada">Gerada</option>
+          <option value="copiada">Copiada</option>
+          <option value="contatada">Contatada</option>
+          <option value="respondida">Respondida</option>
+          <option value="interessada">Interessada</option>
+          <option value="sem_interesse">Sem interesse</option>
+        </select>
+        <select id="filterCategoria" class="select">
+          <option value="">Categoria</option>
+        </select>
+        <select id="sortBy" class="select">
+          <option value="score_desc">Maior Score primeiro</option>
+          <option value="avaliacoes_desc">Mais avaliações</option>
+          <option value="nota_desc">Maior nota</option>
+          <option value="nome_asc">Empresa A-Z</option>
+          <option value="data_desc">Data de importação</option>
+        </select>
+      </div>
+
+      <div class="bulk-actions" id="bulkActions" hidden>
+        <span id="bulkCount">0 selecionados</span>
+        <button class="btn" id="btnBulkGenerate">Gerar mensagens selecionadas</button>
+        <button class="btn" id="btnBulkContacted">Marcar como contatado</button>
+        <button class="btn danger" id="btnBulkDelete">Excluir selecionados</button>
+      </div>
+
+      <div class="table-wrap">
+        <table id="leadsTable">
+          <thead>
+            <tr>
+              <th class="col-check"><input type="checkbox" id="selectAll"></th>
+              <th>Empresa</th>
+              <th>Categoria</th>
+              <th>Telefone</th>
+              <th>Presença Digital</th>
+              <th>Nota</th>
+              <th>Avaliações</th>
+              <th>Score</th>
+              <th>Status</th>
+              <th class="col-actions">Ações</th>
+            </tr>
+          </thead>
+          <tbody id="leadsBody"></tbody>
+        </table>
+      </div>
+
+      <div class="pagination" id="pagination"></div>
+    </section>
+
+    <!-- ========== TEMPLATES ========== -->
+    <section id="tab-templates" class="tab-panel">
+      <h2>Templates</h2>
+      <p class="hint">Use os placeholders <code>{saudacao}</code>, <code>{membro_intro}</code>, <code>{abertura}</code>, <code>{observacao}</code>, <code>{empresa}</code> e <code>{nossa_empresa}</code>. Cada template é aplicado automaticamente conforme o tom e o canal escolhidos.</p>
+      <div class="card">
+        <label>Template Curta (350–500 caracteres)</label>
+        <textarea id="tplCurta" rows="6"></textarea>
+        <label>Template Profissional (500–800 caracteres)</label>
+        <textarea id="tplProfissional" rows="8"></textarea>
+        <label>Template Curiosidade</label>
+        <textarea id="tplCuriosidade" rows="7"></textarea>
+        <label>Template Direta</label>
+        <textarea id="tplDireta" rows="6"></textarea>
+        <label>Template Prévia Pronta</label>
+        <textarea id="tplPrevia" rows="8"></textarea>
+        <div class="row-buttons">
+          <button class="btn primary" id="btnSaveTemplates">Salvar templates</button>
+          <button class="btn ghost" id="btnResetTemplates">Restaurar padrão</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========== CONFIGURAÇÕES ========== -->
+    <section id="tab-settings" class="tab-panel">
+      <h2>Configurações</h2>
+
+      <div class="card">
+        <h3>Membro</h3>
+        <div class="grid-2">
+          <div>
+            <label>Nome</label>
+            <input type="text" id="cfgMemberName" placeholder="João">
+          </div>
+          <div>
+            <label>Cargo</label>
+            <input type="text" id="cfgMemberRole" placeholder="Comercial">
+          </div>
+        </div>
+        <label>Empresa</label>
+        <input type="text" id="cfgCompanyName" value="Impacto Web">
+        <label>Site</label>
+        <input type="text" id="cfgCompanySite" placeholder="https://impactoweb.com.br">
+        <label>WhatsApp da empresa</label>
+        <input type="text" id="cfgCompanyWhatsApp" placeholder="+55 11 9....">
+        <label>Instagram da empresa</label>
+        <input type="text" id="cfgCompanyInstagram" placeholder="@impactoweb">
+      </div>
+
+      <div class="card">
+        <h3>Preferências de geração</h3>
+        <label>Tom padrão</label>
+        <select id="cfgTone" class="select">
+          <option value="profissional">Profissional</option>
+          <option value="curta">Curta</option>
+          <option value="curiosidade">Curiosidade</option>
+          <option value="direta">Direta</option>
+        </select>
+        <label>Canal padrão</label>
+        <select id="cfgChannel" class="select">
+          <option value="whatsapp">WhatsApp</option>
+          <option value="instagram">Instagram DM</option>
+        </select>
+        <label>Prévia</label>
+        <select id="cfgPreview" class="select">
+          <option value="false">Ainda não preparada</option>
+          <option value="true">Já preparada</option>
+        </select>
+        <div class="row-buttons">
+          <button class="btn primary" id="btnSaveSettings">Salvar configurações</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Backup e banco de dados</h3>
+        <div class="row-buttons">
+          <button class="btn" id="btnExportBackup">Exportar backup</button>
+          <button class="btn" id="btnImportBackup">Importar backup</button>
+          <input type="file" id="backupInput" accept=".json" hidden>
+          <button class="btn danger" id="btnClearDB">Limpar banco</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Painel lateral -->
+  <aside id="leadPanel" class="lead-panel" hidden>
+    <div class="lead-panel-header">
+      <h2 id="leadPanelTitle">Lead</h2>
+      <button id="btnClosePanel" class="icon-btn" aria-label="Fechar">×</button>
+    </div>
+    <div class="lead-panel-body" id="leadPanelBody"></div>
+  </aside>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script type="module" src="dashboard.js"></script>
+</body>
+</html>
