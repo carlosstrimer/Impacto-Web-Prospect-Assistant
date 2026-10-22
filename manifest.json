@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Impacto Web Prospect Assistant",
+  "version": "1.0.0",
+  "description": "Assistente de prospecção do time comercial da Impacto Web. Importa leads (CSV/JSON), gera mensagens personalizadas e abre WhatsApp manualmente. 100% local.",
+  "minimum_chrome_version": "102",
+  "action": {
+    "default_title": "Impacto Web Prospect Assistant",
+    "default_popup": "popup.html"
+  },
+  "permissions": ["storage"],
+  "host_permissions": [],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}
