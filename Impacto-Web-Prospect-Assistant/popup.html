@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Impacto Web Prospect Assistant</title>
+  <style>
+    :root { --bg:#081117; --surface:#102029; --line:rgba(190,220,229,.16); --text:#f3f6f1; --muted:#96aab1; --accent:#ffb238; --teal:#48d6bf; }
+    * { box-sizing: border-box; }
+    body { width: 360px; margin: 0; padding: 18px; color: var(--text); background: radial-gradient(circle at 90% 0, rgba(255,178,56,.12), transparent 15rem), var(--bg); font-family:"Trebuchet MS","Segoe UI",sans-serif; }
+    .brand { display:flex; align-items:center; gap:11px; }
+    .logo { width:42px; height:42px; display:grid; place-items:center; border-radius:13px; color:#281a06; background:linear-gradient(135deg,#ffc861,#ee8e2d); font:800 14px Georgia,serif; }
+    .brand strong { display:block; font-size:14px; }
+    .brand small { color:var(--muted); font-size:10px; }
+    .brand small b { color:var(--accent); }
+    .intro { margin:16px 0 12px; }
+    .intro h1 { margin:0 0 5px; font:700 24px/1.05 Georgia,serif; letter-spacing:-.035em; }
+    .intro p { margin:0; color:var(--muted); font-size:11px; line-height:1.45; }
+    .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin:13px 0; }
+    .stat { padding:10px; border:1px solid var(--line); border-radius:11px; background:rgba(16,32,41,.82); }
+    .stat b { display:block; font:700 22px Georgia,serif; }
+    .stat span { color:var(--muted); font-size:9px; text-transform:uppercase; letter-spacing:.07em; }
+    .quick { padding:12px; border:1px solid rgba(255,178,56,.24); border-radius:13px; background:rgba(255,178,56,.06); }
+    .quick label { display:block; margin-bottom:6px; color:var(--accent); font-size:9px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; }
+    .row { display:grid; grid-template-columns:1fr auto; gap:7px; }
+    input { min-width:0; padding:9px 10px; color:var(--text); background:#071015; border:1px solid var(--line); border-radius:9px; outline:none; font:12px inherit; }
+    button { min-height:36px; padding:8px 12px; border:1px solid var(--line); border-radius:9px; color:var(--text); background:var(--surface); font:800 11px inherit; cursor:pointer; }
+    button.primary { color:#281a06; border-color:transparent; background:linear-gradient(135deg,#ffc861,#ee8e2d); }
+    button.full { width:100%; margin-top:9px; }
+    button:hover { filter:brightness(1.07); }
+    .privacy { display:flex; align-items:center; gap:6px; margin-top:11px; color:var(--muted); font-size:9px; }
+    .dot { width:6px; height:6px; border-radius:50%; background:var(--teal); }
+  </style>
+</head>
+<body>
+  <div class="brand">
+    <div class="logo">IW</div>
+    <div><strong>Prospect Assistant</strong><small>Impacto Web · <b>v2.0.0</b></small></div>
+  </div>
+  <div class="intro">
+    <h1>Encontre oportunidades na audiência.</h1>
+    <p>Use um @ famoso como origem e classifique os seguidores de maior e menor potencial.</p>
+  </div>
+  <div class="stats">
+    <div class="stat"><b id="statTotal">0</b><span>Seguidores</span></div>
+    <div class="stat"><b id="statHot">0</b><span>Notas 4–5</span></div>
+    <div class="stat"><b id="statMsgs">0</b><span>Mensagens</span></div>
+  </div>
+  <div class="quick">
+    <label for="quickHandle">Conta de origem</label>
+    <div class="row">
+      <input id="quickHandle" type="text" placeholder="@famoso">
+      <button id="quickAnalyze" class="primary">Minerar</button>
+    </div>
+  </div>
+  <button id="openDashboard" class="full">Abrir dashboard completa</button>
+  <div class="privacy"><span class="dot"></span> Dados e análises ficam neste navegador.</div>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>

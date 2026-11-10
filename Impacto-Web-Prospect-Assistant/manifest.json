@@ -1,0 +1,16 @@
+{
+  "manifest_version": 3,
+  "name": "Impacto Web Prospect Assistant",
+  "version": "2.0.0",
+  "description": "Encontra seguidores com maior e menor potencial a partir de uma conta-semente e gera abordagens personalizadas. 100% local.",
+  "minimum_chrome_version": "102",
+  "action": {
+    "default_title": "Impacto Web Prospect Assistant",
+    "default_popup": "popup.html"
+  },
+  "permissions": ["storage", "tabs", "scripting"],
+  "host_permissions": ["https://www.instagram.com/*"],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  }
+}

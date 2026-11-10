@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="dark">
+  <title>Impacto Web Prospect Assistant 2.0</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+  <header class="topbar">
+    <a class="brand" href="#" aria-label="Impacto Web Prospect Assistant">
+      <span class="logo-mark">IW</span>
+      <span>
+        <strong>Prospect Assistant</strong>
+        <small>Impacto Web <b>v2.0.0</b></small>
+      </span>
+    </a>
+    <nav class="tabs" aria-label="Navegação principal">
+      <button type="button" data-tab="leads" class="tab active" aria-selected="true">Radar de leads</button>
+      <button type="button" data-tab="playbook" class="tab" aria-selected="false">Playbook de mensagens</button>
+      <button type="button" data-tab="settings" class="tab" aria-selected="false">Configurações</button>
+    </nav>
+    <div class="privacy-chip" title="Os dados ficam no navegador">
+      <span class="privacy-dot"></span> Processamento local
+    </div>
+  </header>
+
+  <main>
+    <section id="tab-leads" class="tab-panel active" aria-labelledby="leadsTitle">
+      <div class="page-heading">
+        <div>
+          <p class="eyebrow">Inteligência comercial local</p>
+          <h1 id="leadsTitle">Transforme a audiência certa em oportunidades reais.</h1>
+          <p>Use o @ de uma conta famosa como origem, analise uma amostra dos seguidores e descubra quem tem maior e menor potencial para comprar da Impacto Web.</p>
+        </div>
+        <button type="button" id="btnImport" class="btn secondary">Importar CSV ou JSON</button>
+        <input type="file" id="fileInput" accept=".csv,.json,.tsv,.txt" hidden>
+      </div>
+
+      <section class="instagram-radar" aria-labelledby="radarTitle">
+        <div class="radar-copy">
+          <span class="section-kicker">Novo na versão 2.0</span>
+          <h2 id="radarTitle">Minere seguidores a partir de um @ famoso</h2>
+          <p>A conta informada funciona somente como origem. A extensão abre a lista de seguidores visível, seleciona uma amostra distribuída e qualifica os seguidores — o famoso não entra como lead.</p>
+          <label for="seedInstagram" class="sr-only">Conta de origem do Instagram</label>
+          <div class="handle-composer audience-composer">
+            <input id="seedInstagram" type="text" placeholder="@famoso, influenciador ou perfil de referência">
+            <label class="radar-option">Seguidores coletados
+              <select id="followerPoolSize" class="select full">
+                <option value="50">Até 50</option>
+                <option value="100" selected>Até 100</option>
+                <option value="200">Até 200</option>
+                <option value="400">Até 400</option>
+              </select>
+            </label>
+            <label class="radar-option">Perfis aprofundados
+              <select id="analysisLimit" class="select full">
+                <option value="10">10 perfis</option>
+                <option value="20" selected>20 perfis</option>
+                <option value="40">40 perfis</option>
+                <option value="60">60 perfis</option>
+              </select>
+            </label>
+            <button type="button" id="btnMineFollowers" class="btn accent">Buscar potenciais</button>
+          </div>
+          <div class="radar-footer">
+            <span id="instagramStatus" role="status">Entre no Instagram neste navegador. A extensão usa apenas os seguidores visíveis e pode sofrer limites da plataforma.</span>
+            <button type="button" class="text-btn" id="btnUseRenato">Usar @renato_cariani</button>
+          </div>
+        </div>
+        <div class="score-legend" aria-label="Escala de qualificação">
+          <div class="score-legend-head">
+            <span>Potencial do seguidor</span>
+            <strong>1 → 5</strong>
+          </div>
+          <div class="legend-row"><b class="score-badge score-5">5</b><span>Alta prioridade</span><small>Dor clara, tração e contato</small></div>
+          <div class="legend-row"><b class="score-badge score-4">4</b><span>Lead qualificado</span><small>Boa aderência comercial</small></div>
+          <div class="legend-row"><b class="score-badge score-3">3</b><span>Vale diagnosticar</span><small>Potencial com ressalvas</small></div>
+          <div class="legend-row compact"><b class="score-badge score-2">2</b><span>Baixa prioridade</span></div>
+          <div class="legend-row compact"><b class="score-badge score-1">1</b><span>Nutrir ou pesquisar</span></div>
+        </div>
+      </section>
+
+      <div class="stats-grid" id="statsGrid" aria-label="Resumo do funil"></div>
+
+      <section class="insights-grid" aria-label="Leitura rápida do funil">
+        <article class="insight-card">
+          <div class="card-heading">
+            <div>
+              <p class="eyebrow">Distribuição</p>
+              <h2>Qualidade da base</h2>
+            </div>
+            <span id="averageScore" class="metric-pill">Média 0,0</span>
+          </div>
+          <div id="scoreDistribution" class="score-distribution"></div>
+        </article>
+        <article class="insight-card audience-extremes">
+          <div class="card-heading">
+            <div>
+              <p class="eyebrow">Extremos da audiência</p>
+              <h2>Maior e menor potencial</h2>
+            </div>
+            <button type="button" id="btnFocusHot" class="text-btn">Ver notas 4 e 5</button>
+          </div>
+          <div class="extremes-grid">
+            <div><span class="extreme-label high">Maior potencial</span><div id="highPotential" class="next-actions"></div></div>
+            <div><span class="extreme-label low">Menor potencial</span><div id="lowPotential" class="next-actions"></div></div>
+          </div>
+        </article>
+      </section>
+
+      <section class="workspace-card" aria-labelledby="baseTitle">
+        <div class="workspace-head">
+          <div>
+            <p class="eyebrow">Base comercial</p>
+            <h2 id="baseTitle">Seguidores qualificados</h2>
+          </div>
+          <div class="workspace-head-actions">
+            <label class="inline-label">Modo de importação
+              <select id="importMode" class="select compact-select">
+                <option value="append">Adicionar e atualizar</option>
+                <option value="replace">Substituir lista</option>
+              </select>
+            </label>
+            <button type="button" id="btnGenerateAll" class="btn secondary">Gerar mensagens filtradas</button>
+            <button type="button" id="btnExportCSV" class="btn ghost">Exportar CSV</button>
+            <button type="button" id="btnExportJSON" class="btn ghost">JSON</button>
+          </div>
+        </div>
+
+        <div class="filters-bar">
+          <label class="search-box">
+            <span class="sr-only">Buscar leads</span>
+            <input type="search" id="searchInput" placeholder="Buscar seguidor, @, conta de origem, dor ou categoria">
+          </label>
+          <select id="filterScore" class="select" aria-label="Filtrar por qualificação">
+            <option value="">Todas as notas</option>
+            <option value="5">Nota 5</option>
+            <option value="4">Nota 4</option>
+            <option value="3">Nota 3</option>
+            <option value="2">Nota 2</option>
+            <option value="1">Nota 1</option>
+            <option value="hot">Notas 4 e 5</option>
+          </select>
+          <select id="filterPresenca" class="select" aria-label="Filtrar por presença digital">
+            <option value="">Toda presença digital</option>
+            <option value="site">Com site próprio</option>
+            <option value="instagram">Somente Instagram</option>
+            <option value="whatsapp">Somente WhatsApp</option>
+            <option value="insta_whats">Instagram + WhatsApp</option>
+            <option value="nenhuma">Sem presença</option>
+          </select>
+          <select id="filterStatus" class="select" aria-label="Filtrar por status">
+            <option value="">Todos os status</option>
+            <option value="nao_gerada">Mensagem não gerada</option>
+            <option value="gerada">Mensagem gerada</option>
+            <option value="copiada">Mensagem copiada</option>
+            <option value="contatada">Contatada</option>
+            <option value="respondida">Respondida</option>
+            <option value="interessada">Interessada</option>
+            <option value="sem_interesse">Sem interesse</option>
+          </select>
+          <select id="filterCategoria" class="select" aria-label="Filtrar por categoria">
+            <option value="">Todas as categorias</option>
+          </select>
+          <select id="sortBy" class="select" aria-label="Ordenar leads">
+            <option value="score_desc">Maior chance primeiro</option>
+            <option value="followers_desc">Mais seguidores</option>
+            <option value="avaliacoes_desc">Mais avaliações</option>
+            <option value="nota_desc">Maior nota Google</option>
+            <option value="nome_asc">Empresa A–Z</option>
+            <option value="data_desc">Mais recentes</option>
+          </select>
+        </div>
+
+        <div class="bulk-actions" id="bulkActions" hidden>
+          <strong id="bulkCount">0 selecionados</strong>
+          <button type="button" class="btn small" id="btnBulkGenerate">Gerar mensagens</button>
+          <button type="button" class="btn small" id="btnBulkContacted">Marcar contatados</button>
+          <button type="button" class="btn small danger" id="btnBulkDelete">Excluir</button>
+        </div>
+
+        <div class="table-wrap">
+          <table id="leadsTable">
+            <thead>
+              <tr>
+                <th class="col-check"><input type="checkbox" id="selectAll" aria-label="Selecionar página"></th>
+                <th>Lead</th>
+                <th>Dor identificada</th>
+                <th>Qualificação</th>
+                <th>Prova</th>
+                <th>Status</th>
+                <th>Próxima ação</th>
+                <th class="col-actions">Ações</th>
+              </tr>
+            </thead>
+            <tbody id="leadsBody"></tbody>
+          </table>
+        </div>
+        <div class="pagination" id="pagination"></div>
+      </section>
+    </section>
+
+    <section id="tab-playbook" class="tab-panel" aria-labelledby="playbookTitle">
+      <div class="page-heading narrow">
+        <div>
+          <p class="eyebrow">Personalização comercial</p>
+          <h1 id="playbookTitle">Um playbook para cada contexto.</h1>
+          <p>Escolha a estratégia, refine o texto e use os dados específicos do lead sem soar genérico.</p>
+        </div>
+      </div>
+
+      <div class="playbook-layout">
+        <aside class="strategy-list" id="strategyList" aria-label="Estratégias de mensagem"></aside>
+        <article class="template-editor-card">
+          <div class="card-heading">
+            <div>
+              <p class="eyebrow">Template ativo</p>
+              <h2 id="templateTitle">Dor específica</h2>
+              <p id="templateDescription"></p>
+            </div>
+          </div>
+          <div class="placeholder-list" aria-label="Campos disponíveis">
+            <code>{saudacao}</code><code>{empresa}</code><code>{dor}</code><code>{oportunidade}</code>
+            <code>{prova}</code><code>{abordagem}</code><code>{membro_intro}</code>
+          </div>
+          <label for="templateEditor">Texto do template</label>
+          <textarea id="templateEditor" rows="18"></textarea>
+          <div class="row-buttons">
+            <button type="button" class="btn accent" id="btnSaveTemplate">Salvar template</button>
+            <button type="button" class="btn ghost" id="btnResetTemplate">Restaurar este padrão</button>
+            <button type="button" class="btn ghost" id="btnResetTemplates">Restaurar todos</button>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section id="tab-settings" class="tab-panel" aria-labelledby="settingsTitle">
+      <div class="page-heading narrow">
+        <div>
+          <p class="eyebrow">Preferências</p>
+          <h1 id="settingsTitle">Configure sua identidade comercial.</h1>
+          <p>Esses dados entram nas mensagens e permanecem apenas no armazenamento local da extensão.</p>
+        </div>
+      </div>
+
+      <div class="settings-grid">
+        <article class="settings-card">
+          <p class="eyebrow">Remetente</p>
+          <h2>Quem está prospectando</h2>
+          <div class="grid-2">
+            <label>Nome<input type="text" id="cfgMemberName" placeholder="Seu nome"></label>
+            <label>Cargo<input type="text" id="cfgMemberRole" placeholder="Consultor comercial"></label>
+          </div>
+          <label>Empresa<input type="text" id="cfgCompanyName" value="Impacto Web"></label>
+          <label>Site<input type="text" id="cfgCompanySite" placeholder="https://impactoweb.com.br"></label>
+          <div class="grid-2">
+            <label>WhatsApp<input type="text" id="cfgCompanyWhatsApp" placeholder="+55 11 9..."></label>
+            <label>Instagram<input type="text" id="cfgCompanyInstagram" placeholder="@impactoweb"></label>
+          </div>
+        </article>
+
+        <article class="settings-card">
+          <p class="eyebrow">Geração</p>
+          <h2>Padrões de abordagem</h2>
+          <label>Estratégia padrão
+            <select id="cfgStrategy" class="select full"></select>
+          </label>
+          <label>Canal padrão
+            <select id="cfgChannel" class="select full">
+              <option value="whatsapp">WhatsApp</option>
+              <option value="instagram">Instagram DM</option>
+            </select>
+          </label>
+          <label>Prévia do projeto
+            <select id="cfgPreview" class="select full">
+              <option value="false">Ainda não preparada</option>
+              <option value="true">Já preparada</option>
+            </select>
+          </label>
+          <button type="button" class="btn accent full-button" id="btnSaveSettings">Salvar configurações</button>
+        </article>
+
+        <article class="settings-card span-2">
+          <div class="card-heading">
+            <div>
+              <p class="eyebrow">Dados locais</p>
+              <h2>Backup e manutenção</h2>
+              <p>Exporte antes de trocar de computador ou limpar os dados.</p>
+            </div>
+            <span class="privacy-chip"><span class="privacy-dot"></span> IndexedDB local</span>
+          </div>
+          <div class="row-buttons">
+            <button type="button" class="btn secondary" id="btnExportBackup">Exportar backup</button>
+            <button type="button" class="btn ghost" id="btnImportBackup">Importar backup</button>
+            <input type="file" id="backupInput" accept=".json" hidden>
+            <button type="button" class="btn danger" id="btnClearDB">Limpar todos os dados</button>
+          </div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div id="panelBackdrop" class="panel-backdrop" hidden></div>
+  <aside id="leadPanel" class="lead-panel" hidden aria-labelledby="leadPanelTitle">
+    <div class="lead-panel-header">
+      <div>
+        <p class="eyebrow">Diagnóstico comercial</p>
+        <h2 id="leadPanelTitle">Lead</h2>
+      </div>
+      <button type="button" id="btnClosePanel" class="icon-btn" aria-label="Fechar painel">×</button>
+    </div>
+    <div class="lead-panel-body" id="leadPanelBody"></div>
+  </aside>
+
+  <div id="toast" class="toast" hidden role="status" aria-live="polite"></div>
+  <script type="module" src="dashboard.js"></script>
+</body>
+</html>
