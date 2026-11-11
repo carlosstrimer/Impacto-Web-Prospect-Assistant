@@ -1,87 +1,76 @@
-<!-- FILE: README.md -->
-# Impacto Web Prospect Assistant
+# Impacto Web Prospect Assistant 2.0
 
-Extensão Chromium (Manifest V3) que auxilia o time comercial da **Impacto Web** a transformar listas de leads exportadas (CSV/JSON) em **mensagens de prospecção personalizadas**, com fluxo manual de cópia + abertura do WhatsApp.
+Extensao Chromium Manifest V3 para encontrar potenciais clientes dentro da audiencia de perfis famosos, identificar dores digitais e gerar abordagens comerciais personalizadas para a Impacto Web.
 
-> **Não envia nada automaticamente.** O envio é sempre feito por um humano, colando a mensagem no WhatsApp.
+## Principais recursos
 
-## Fluxo principal
+- Triagem economica de ate 10 mil seguidores visiveis de uma conta-semente.
+- Salvamento incremental em lotes de 100 registros para reduzir uso de memoria.
+- Analise aprofundada configuravel, processada em uma unica aba temporaria por vez.
+- Pausa e cancelamento com preservacao dos dados ja salvos.
+- Priorizacao de sinais comerciais, extremos e amostra distribuida; a conta famosa nao vira lead.
+- Qualificacao explicavel de 1 a 5.
+- Identificacao de dor, oportunidade e proximo passo.
+- Nove estrategias de mensagem, incluindo dor especifica, consultiva, oportunidade, autoridade, follow-up e reativacao.
+- Tres variacoes de mensagem por lead.
+- Importacao CSV/JSON e exportacao CSV/JSON.
+- Funil comercial, observacoes e follow-up.
+- Persistencia local em IndexedDB.
+- Backup e restauracao completos.
 
-## Recursos
+## Instalacao
 
-- **Importação robusta** de `.csv` e `.json` com detecção automática de separador (`,` `;` `\t` `|`), suporte a BOM, aspas, acentos e quebras de linha dentro de campos.
-- **Sistema de aliases** de colunas (`Nome`/`empresa`/`name`, `Avaliações`/`reviews`, etc.).
-- **Motor de personalização 100% local** baseado em regras + templates editáveis. Nenhuma chamada de rede.
-- **4 tons de copy**: Curta, Profissional, Curiosidade, Direta. Dois canais: WhatsApp e Instagram DM.
-- **Modo prévia pronta** (quando a prévia do site já foi preparada pelo time).
-- **Persistência em IndexedDB** — os dados sobrevivem ao fechamento do navegador.
-- **Deduplicação inteligente** por `place_id` → URL do Maps → telefone → nome+endereço. Nunca sobrescreve mensagem editada, status, observação ou follow-up.
-- **Paginação** (50/página) e renderização por lotes para suportar milhares de leads.
-- **Status comercial** + **status de mensagem** + **observação interna** + **follow-up**.
-- **Backup e restore** completos em JSON.
+1. Extraia o arquivo ZIP.
+2. Abra `chrome://extensions`, `edge://extensions` ou `brave://extensions`.
+3. Ative o modo desenvolvedor.
+4. Clique em **Carregar sem compactacao**.
+5. Selecione a pasta extraida.
+6. Abra a extensao e clique em **Abrir dashboard completa**.
 
-## Instalação
+## Mineracao de audiencia no Instagram
 
-1. Baixe/clone o diretório da extensão.
-2. Abra `chrome://extensions` (ou `edge://extensions`, `brave://extensions`).
-3. Ative **Modo desenvolvedor** (canto superior direito).
-4. Clique em **Carregar sem compactação** e selecione a pasta da extensão.
-5. Clique no ícone da extensão → **Abrir Painel Completo** (ou acesse o dashboard em uma aba).
+A extensao solicita acesso apenas a `https://www.instagram.com/*`. Informe o `@` de um famoso, influenciador ou perfil de referencia. A extensao abre a lista de seguidores visivel e pode fazer triagem local de ate 10 mil perfis. Em seguida, aprofunda somente a quantidade escolhida, um perfil por vez.
 
-### Ícones (opcional)
+O fluxo recomendado para computadores com ate 16 GB de RAM e:
 
-Nenhum ícone está referenciado no `manifest.json`, o que permite a instalação imediata sem assets binários. Se quiser um ícone personalizado, crie `icons/16.png`, `icons/48.png`, `icons/128.png` e adicione ao `manifest.json`:
+1. selecionar a quantidade total para triagem;
+2. aprofundar uma parcela menor, por exemplo 50 de 500 ou 100 de 10 mil;
+3. filtrar por nota e por nivel de analise antes da abordagem;
+4. aumentar a profundidade em uma nova execucao apenas quando necessario.
 
-```json
-"icons": { "16": "icons/16.png", "48": "icons/48.png", "128": "icons/128.png" },
-"action": {
-  "default_title": "Impacto Web Prospect Assistant",
-  "default_popup": "popup.html",
-  "default_icon": { "16": "icons/16.png", "48": "icons/48.png", "128": "icons/128.png" }
-}
+Os perfis de triagem recebem menor confianca e ficam identificados como **Triagem leve**. Perfis visitados individualmente ficam identificados como **Analise profunda**.
 
+A conta-semente serve apenas como origem. Ela nao e adicionada ao funil.
+
+O Instagram normalmente exige que o usuario esteja conectado no navegador para abrir a lista de seguidores. A extensao nao automatiza login, nao usa endpoints privados e nao contorna bloqueios. A quantidade coletada pode variar por carregamento, privacidade e limites da plataforma. Coletas grandes podem levar varios minutos; aprofundar milhares de perfis pode levar horas e sofrer limitacao da plataforma.
+
+A dashboard e responsiva, mas a execucao da extensao depende de um navegador Chromium que aceite extensoes. O Chrome padrao do Android nao permite instalar extensoes.
+
+O score considera:
+
+- necessidade digital;
+- tracao e prova social;
+- facilidade de contato;
+- aderencia aos servicos da Impacto Web;
+- maturidade da operacao digital atual.
+
+O modelo nao garante fechamento. Ele organiza prioridades comerciais com base nos dados disponiveis.
+
+## Privacidade
+
+- Sem servidor proprio.
+- Sem API externa de IA.
+- Sem envio automatico de mensagens.
+- Leads, mensagens e configuracoes permanecem no navegador.
+
+## Desenvolvimento
+
+```bash
+npm test
+npm run check
+npm run smoke
+npm run layout
+npm run dev
 ```
 
-Compatível com **Chrome 102+**, **Edge**, **Brave**. `minimum_chrome_version` já está declarado.
-
-## 5. Testes sugeridos
-
-| # | Teste | Resultado esperado |
-|---|---|---|
-| 1 | Importar CSV 100 leads | Toast "100 leads importados" |
-| 2 | Importar JSON 100 leads | Toast "100 leads importados" |
-| 3 | Importar 5.000 leads | Importação conclui (lotes de 50 em IndexedDB) |
-| 4 | Lead sem nome | Mensagem começa em "Olá, tudo bem?" |
-| 5 | Lead com nota + avaliações, sem site | Observação cita "X avaliações e nota Y" |
-| 6 | Lead só com Instagram, sem site | Observação cita Instagram |
-| 7 | Lead só com WhatsApp, sem site | Observação cita WhatsApp |
-| 8 | Lead com ≥200 avaliações | Observação cita "mais de N avaliações" |
-| 9 | Lead com nota ≥4.5 | Observação cita a nota |
-| 10 | Telefone `(11) 91234-5678` | `Abrir WhatsApp` gera `https://wa.me/5511912345678` |
-| 11 | Telefone `+1 415 555 2671` | `Abrir WhatsApp` gera `https://wa.me/14155552671` |
-| 12 | Marcar como "copiada" | Badge verde "Copiada" na tabela |
-| 13 | Duplicado por `place_id` | Lead atualizado sem perder mensagem/status |
-| 14 | Gerar todas (filtradas) com 800 leads | Toast progressivo "Gerando... N de 800" |
-| 15 | Fechar aba e reabrir dashboard | Todos os leads e mensagens persistem |
-| 16 | Copiar + Abrir WhatsApp | Mensagem no clipboard + aba `wa.me` aberta |
-| 17 | Botão `Restaurar padrão` (templates) | Volta aos templates originais |
-| 18 | Exportar backup → limpar banco → importar backup | Dados 100% restaurados |
-| 19 | CSV com `;` e vírgula em campo entre aspas | Importa corretamente |
-| 20 | CSV com BOM (Excel) | Cabeçalho `\uFEFF` é ignorado |
-
-## 6. Limitações explícitas
-
-- **Sem envio automático**: a extensão não simula cliques no WhatsApp, não dispara mensagens em massa e não contorna limites do WhatsApp.
-- **Sem IA externa na v1**: a personalização é baseada em regras e templates. A função `generateMessageWithTemplates` já retorna `Promise`-compatível (síncrona, mas pode ser trocada por versão assíncrona sem impacto no restante do código).
-- **CSV com `\n` dentro de campo sem aspas** é ambíguo — comportamento padrão da RFC 4180 respeitado.
-- **Sem ícones inclusos** (instruções para adicionar estão no README).
-- **Deduplicação não cobre alterações de telefone**: se a empresa trocar de telefone e não tiver `place_id`/`maps`, poderá gerar duplicata (cenário raro e contornável editando o lead original).
-- **Sem sincronização entre dispositivos** — por design (100% local, privacidade por padrão).
-
-## 7. Observações finais
-
-- **Nenhum `eval`, `new Function` ou CDN** é utilizado. `innerHTML` só recebe dados do usuário após `escapeHtml()`.
-- **Manifest V3**, CSP padrão (`script-src 'self'; object-src 'self'`), permissões mínimas (`storage`).
-- **Anti-spam**: botão `Abrir WhatsApp` apenas abre `wa.me/<número>` sem pré-preenchimento. A decisão de enviar é sempre humana.
-- **Privacidade**: 100% local, sem chamadas de rede.
-- Para suportar **IA opcional no futuro**, basta alterar `generateMessageWithTemplates()` para retornar `Promise<string>` — os pontos de uso já fazem `await`/`then` quando necessário.
+Os testes cobrem qualificacao, escala de 10 mil, processamento economico, leitura de dados do Instagram, geracao de mensagens, importacao, exportacao segura de CSV, botoes da dashboard/popup e responsividade.

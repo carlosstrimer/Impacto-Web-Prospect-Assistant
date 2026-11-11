@@ -1,0 +1,13 @@
+{
+  "name": "impacto-web-prospect-assistant",
+  "version": "2.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node scripts/dev-server.mjs",
+    "layout": "node scripts/check-layout.mjs",
+    "smoke": "node scripts/smoke-dashboard.mjs",
+    "test": "node --test",
+    "check": "node --check dashboard.js && node --check popup.js && node --check modules/instagram-analyzer.js && node --check modules/lead-scoring.js && node --check modules/message-generator.js && node --check scripts/smoke-dashboard.mjs && node --check scripts/check-layout.mjs"
+  }
+}

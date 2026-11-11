@@ -1,15 +1,23 @@
 {
   "manifest_version": 3,
   "name": "Impacto Web Prospect Assistant",
-  "version": "1.0.0",
-  "description": "Assistente de prospecção do time comercial da Impacto Web. Importa leads (CSV/JSON), gera mensagens personalizadas e abre WhatsApp manualmente. 100% local.",
+  "version": "2.0.0",
+  "description": "Faz triagem econômica de até 10 mil seguidores, aprofunda os melhores leads e gera abordagens personalizadas. 100% local.",
+  "icons": {
+    "48": "assets/impacto-web-icon-48.png",
+    "128": "assets/impacto-web-icon-192.png"
+  },
   "minimum_chrome_version": "102",
   "action": {
     "default_title": "Impacto Web Prospect Assistant",
-    "default_popup": "popup.html"
+    "default_popup": "popup.html",
+    "default_icon": {
+      "48": "assets/impacto-web-icon-48.png",
+      "128": "assets/impacto-web-icon-192.png"
+    }
   },
-  "permissions": ["storage"],
-  "host_permissions": [],
+  "permissions": ["storage", "tabs", "scripting"],
+  "host_permissions": ["https://www.instagram.com/*"],
   "content_security_policy": {
     "extension_pages": "script-src 'self'; object-src 'self'"
   }
